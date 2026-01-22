@@ -1,9 +1,25 @@
 import { useState } from "react";
 
-function ExpenseForm() {
+function ExpenseForm({ onAddExpense }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Food");
+
+  function handleAdd() {
+    const newExpense = {
+      id: Date.now(),
+      title: title,
+      amount: Number(amount),
+      category: category,
+    };
+
+    onAddExpense(newExpense);
+
+    // Clear inputs
+    setTitle("");
+    setAmount("");
+    setCategory("Food");
+  }
 
   return (
     <div>
@@ -25,10 +41,7 @@ function ExpenseForm() {
       />
       <br />
 
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option>Food</option>
         <option>Travel</option>
         <option>Shopping</option>
@@ -36,7 +49,7 @@ function ExpenseForm() {
       </select>
       <br />
 
-      <button>Add</button>
+      <button onClick={handleAdd}>Add</button>
     </div>
   );
 }

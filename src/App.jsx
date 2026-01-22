@@ -8,13 +8,36 @@ function App() {
   const [expenses, setExpenses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  function addExpense(expense) {
+    setExpenses((prev) => [...prev, expense]);
+  }
+
+  function deleteExpense(id) {
+    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
+  }
+
+  const filteredExpenses =
+    selectedCategory === "All"
+      ? expenses
+      : expenses.filter((e) => e.category === selectedCategory);
+
   return (
     <>
       <h1>Personal Expense Tracker</h1>
-      <ExpenseForm />
-      <ExpenseFilter />
-      <ExpenseList />
-      <TotalAmount />
+
+      <ExpenseForm onAddExpense={addExpense} />
+
+      <ExpenseFilter
+        selectedCategory={selectedCategory}
+        onChangeCategory={setSelectedCategory}
+      />
+
+      <ExpenseList
+        expenses={filteredExpenses}
+        onDeleteExpense={deleteExpense}
+      />
+
+      <TotalAmount expenses={filteredExpenses} />
     </>
   );
 }
